@@ -31,6 +31,13 @@ ELSE()
 	cmake_minimum_required(VERSION 3.11)
 ENDIF()
 
+################################
+# Added for Basis.
+if(WIN32)
+	set(CMAKE_SYSTEM_VERSION 8.1 CACHE TYPE INTERNAL FORCE)
+endif()
+################################
+
 project(PhysXSDK C CXX)
 
 OPTION(PX_BUILDSNIPPETS "Generate the snippets" OFF)
