@@ -115,11 +115,17 @@ PxVehicleDriveDynData::PxVehicleDriveDynData()
 		mTargetGear(PxVehicleGearsData::eNEUTRAL),
 		mEnginespeed(0.0f),
 		mGearSwitchTime(0.0f),
-		mAutoBoxSwitchTime(0.0f)
+		mAutoBoxSwitchTime(0.0f),
+		mOverriddenTorqueRatios(false)
 {
 	for(PxU32 i=0;i<eMAX_NB_ANALOG_INPUTS;i++)
 	{
 		mControlAnalogVals[i]=0.0f;		
+	}
+
+	for (PxU32 i = 0; i < PX_MAX_NB_WHEELS; i++)
+	{
+		mTorqueRatios[i] = 0.0f;
 	}
 }
 
@@ -141,6 +147,12 @@ void PxVehicleDriveDynData::setToRestState()
 
 	//Set internal dynamics to zero so the vehicle starts completely at rest.
 	mEnginespeed=0.0f;
+
+	mOverriddenTorqueRatios = false;
+	for (PxU32 i = 0; i < PX_MAX_NB_WHEELS; i++)
+	{
+		mTorqueRatios[i] = 0.0f;
+	}
 }
 
 bool PxVehicleDriveDynData::isValid() const

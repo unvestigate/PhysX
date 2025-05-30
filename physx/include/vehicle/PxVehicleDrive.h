@@ -461,8 +461,14 @@ public:
 	*/
 	PxReal mAutoBoxSwitchTime;
 
+	/**
+	\brief Added for Basis. Overridden torque ratios for torque vectoring. Not supported by all vehicle types.
+	*/
+	bool mOverriddenTorqueRatios;
+	PxReal mTorqueRatios[PX_MAX_NB_WHEELS];
+
 private:
-	PxU32 mPad[2];
+	PxU32 mPad[5];
 
 	/**
 	\brief Test that a PxVehicleDriveDynData instance has legal values.

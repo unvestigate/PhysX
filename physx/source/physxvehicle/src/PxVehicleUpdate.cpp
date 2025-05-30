@@ -5621,9 +5621,21 @@ void PxVehicleUpdate::updateDriveNW
 	//diff torque ratio for each wheel.
 	PxF32 diffTorqueRatios[PX_MAX_NB_WHEELS];
 	PxMemSet(diffTorqueRatios, 0, sizeof(PxF32)*PX_MAX_NB_WHEELS);
-	for(PxU32 i=0;i<numActiveWheels;i++)
+	if (driveDynData.mOverriddenTorqueRatios)
 	{
-		diffTorqueRatios[i] = diffData.getIsDrivenWheel(i) ? invNumDrivenWheels : 0.0f;
+		// Torque vectoring. Added for Basis.
+		for (PxU32 i = 0; i < numActiveWheels; i++)
+		{
+			diffTorqueRatios[i] = diffData.getIsDrivenWheel(i) ? driveDynData.mTorqueRatios[i] : 0.0f;
+		}
+	}
+	else
+	{
+		// Standard behavior.
+		for (PxU32 i = 0; i < numActiveWheels; i++)
+		{
+			diffTorqueRatios[i] = diffData.getIsDrivenWheel(i) ? invNumDrivenWheels : 0.0f;
+		}
 	}
 
 	//Get the local rotations of the wheel shapes with the latest steer.

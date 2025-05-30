@@ -128,6 +128,9 @@ void PxVehicleDrive::getBinaryMetaData(PxOutputStream& stream)
 	PX_DEF_BIN_METADATA_ITEM(stream,		PxVehicleDriveDynData,	PxReal, 				mGearSwitchTime,		0)
 	PX_DEF_BIN_METADATA_ITEM(stream,		PxVehicleDriveDynData,	PxReal, 				mAutoBoxSwitchTime,		0)
 
+	PX_DEF_BIN_METADATA_ITEM(stream,		PxVehicleDriveDynData,	bool,					mOverriddenTorqueRatios,0)
+	PX_DEF_BIN_METADATA_ITEMS_AUTO(stream,	PxVehicleDriveDynData,	PxReal, 				mTorqueRatios,			0)
+
 	PX_DEF_BIN_METADATA_ITEMS_AUTO(stream,	PxVehicleDriveDynData,	PxU32,					mPad,					PxMetaDataFlag::ePADDING)	
 
 	//PxVehicleDrive
