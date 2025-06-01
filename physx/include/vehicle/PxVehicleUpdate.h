@@ -215,6 +215,12 @@ namespace physx
 		\brief Local pose of the wheel.
 		*/
 		PxTransform localPose;
+
+		/**
+		\brief The "sticky tire" states for longitudinal/lateral stickiness. Added for Basis.
+		*/
+		bool stickyTireLongitudinal;
+		bool stickyTireLateral;
 	};
 
 	/**

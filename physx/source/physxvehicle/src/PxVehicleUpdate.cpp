@@ -4722,6 +4722,15 @@ public:
 		}
 	}
 
+	PX_INLINE static void storeStickyTireData(const ProcessSuspWheelTireInputData& inputData, PxWheelQueryResult* wheelQueryResults, const PxU32 numWheels)
+	{
+		PxVehicleConstraintShader& constraintShader = inputData.vehWheels4DynData->getVehicletConstraintShader();
+		for (PxU32 i = 0; i < numWheels; i++)
+		{
+			wheelQueryResults[i].stickyTireLongitudinal = constraintShader.mData.mStickyTireForwardData.mActiveFlags[i];
+			wheelQueryResults[i].stickyTireLateral = constraintShader.mData.mStickyTireSideData.mActiveFlags[i];
+		}
+	}
 
 	static void shiftOrigin(const PxVec3& shift, const PxU32 numVehicles, PxVehicleWheels** vehicles);
 };
@@ -5109,6 +5118,8 @@ VehicleTelemetryDataContext* vehTelemetryDataContext, const PxVehicleContext& co
 			storeSuspWheelTireResults(outputData, inputData.steerAngles, &wheelQueryResults[4*0], numActiveWheelsPerBlock4[0]);
 			storeHitActorForces(outputData, &vehicleConcurrentUpdates.concurrentWheelUpdates[4*0], numActiveWheelsPerBlock4[0]);
 
+			storeStickyTireData(inputData, &wheelQueryResults[4*0], numActiveWheelsPerBlock4[0]);
+
 			END_TIMER(TIMER_WHEELS);
 			START_TIMER(TIMER_INTERNAL_DYNAMICS_SOLVER);
 
@@ -5226,6 +5237,8 @@ VehicleTelemetryDataContext* vehTelemetryDataContext, const PxVehicleContext& co
 			}
 			storeSuspWheelTireResults(extraOutputData, extraInputData.steerAngles, &wheelQueryResults[4*j], numActiveWheelsPerBlock4[j]);
 			storeHitActorForces(extraOutputData, &vehicleConcurrentUpdates.concurrentWheelUpdates[4*j], numActiveWheelsPerBlock4[j]);
+
+			storeStickyTireData(extraInputData, &wheelQueryResults[4*j], numActiveWheelsPerBlock4[j]);
 
 			//Integrate the tire torques (omega += (tireTorque + brakeTorque)*dt)
 			integrateUndriveWheelRotationSpeeds(subTimestep, brake, handbrake, extraOutputData.tireTorques, extraWheelBrakeTorques, wheels4SimDatas[j], wheels4DynDatas[j]);
@@ -5716,6 +5729,8 @@ void PxVehicleUpdate::updateDriveNW
 			}
 			storeSuspWheelTireResults(outputData[i], inputData.steerAngles, &wheelQueryResults[4*i], numActiveWheelsPerBlock4[i]);
 			storeHitActorForces(outputData[i], &vehicleConcurrentUpdates.concurrentWheelUpdates[4*i], numActiveWheelsPerBlock4[i]);
+
+			storeStickyTireData(inputData, &wheelQueryResults[4*i], numActiveWheelsPerBlock4[i]);
 		}
 
 		//Store the tire torques in a single array.
@@ -6243,6 +6258,8 @@ void PxVehicleUpdate::updateTank
 			}
 			storeSuspWheelTireResults(outputData[i], inputData.steerAngles, &wheelQueryResults[4*i], numActiveWheelsPerBlock4[i]);
 			storeHitActorForces(outputData[i], &vehicleConcurrentUpdates.concurrentWheelUpdates[4*i], numActiveWheelsPerBlock4[i]);
+
+			storeStickyTireData(inputData, &wheelQueryResults[4*i], numActiveWheelsPerBlock4[i]);
 		}
 
 		//Copy the tire torques to a single array.
@@ -6624,6 +6641,8 @@ void PxVehicleUpdate::updateNoDrive
 			}
 			storeSuspWheelTireResults(outputData, inputData.steerAngles, &wheelQueryResults[4*i], numActiveWheelsPerBlock4[i]);
 			storeHitActorForces(outputData, &vehicleConcurrentUpdates.concurrentWheelUpdates[4*i], numActiveWheelsPerBlock4[i]);
+
+			storeStickyTireData(inputData, &wheelQueryResults[4*i], numActiveWheelsPerBlock4[i]);
 
 			//Integrate wheel speeds.
 			const PxF32 wheelDampingRates[4]=
