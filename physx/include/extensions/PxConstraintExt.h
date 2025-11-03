@@ -51,6 +51,10 @@ struct PxConstraintExtIDs
 	{
 		eJOINT,
 		eVEHICLE_JOINT,
+
+		eVEHICLE_SUSP_LIMIT_BASIS,   // Used to be eVEHICLE_SUSP_LIMIT_DEPRECATED. Was removed and added back for Basis.
+		eVEHICLE_STICKY_TYRE_BASIS,  // Used to be eVEHICLE_STICKY_TYRE_DEPRECATED. Was removed and added back for Basis.
+
 		eNEXT_FREE_ID,
 		eINVALID_ID = 0x7fffffff
 	};
